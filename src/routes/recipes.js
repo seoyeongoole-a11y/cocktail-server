@@ -24,6 +24,15 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
       "INSERT INTO recipes(user_id, name, image, description) VALUES(?, ?, ?, ?)",
       [userId, name, image, description],
     );
+
+    const recipesId = result.insertId;
+
+    //ingredients 테이블에 추가
+    await pool.query(
+      "INSERT INTO ingredients(recipes_id, name,amount ) VALUES(?, ?, ?)",
+    );
+//directions 테이블에 추가
+
     res.status(201).json({ name, image, description });
   } catch (error) {
     console.error(error);

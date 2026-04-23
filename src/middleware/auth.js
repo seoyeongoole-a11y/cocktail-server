@@ -3,6 +3,7 @@ import "dotenv/config";
 
 // 미들웨어 : 요청과 라우터 사이에 실행되는 함수
 const authMiddleware = (req, res, next) => {
+  try{
   const authHeader = req.headers.authorization;
   const token = authHeader.split(" ")[1];
   // 토큰이 유효한지 검사 -> 안에 담긴 정보 꺼냄
@@ -12,5 +13,8 @@ const authMiddleware = (req, res, next) => {
 
   // 통과했고 다음 요청으로 이동
   next();
+  } catch(error) {
+    return res.status(401).json({message : "인증실패"});
+  }
 };
 export default authMiddleware;
